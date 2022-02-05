@@ -33,7 +33,10 @@ const config: HardhatUserConfig = {
     mumbai: {
       url: process.env.MUMBAI_URL,
     },
-    mainnet: {},
+    matic: {
+      url: process.env.MATIC_URL,
+      accounts: [process.env.MATIC_PRIVATE_KEY || '']
+    },
     ropsten: {
       url: process.env.ROPSTEN_URL || "",
       accounts:
