@@ -3,6 +3,7 @@
 //
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
+
 import { ethers } from "hardhat";
 
 async function main() {
@@ -12,7 +13,7 @@ async function main() {
   console.log("ezNFTMarket Deployed to:", ezNFTMarket.address);
 
   const EzNFT = await ethers.getContractFactory("EzNFT");
-  const ezNFT = await EzNFT.deploy();
+  const ezNFT = await EzNFT.deploy(ezNFTMarket.address);
   await ezNFT.deployed();
   console.log("ezNFT Deployed to:", ezNFT.address);
 }
