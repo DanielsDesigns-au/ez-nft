@@ -20,6 +20,7 @@
     "@nomiclabs/hardhat-etherscan": "^2.1.8",
     "@nomiclabs/hardhat-waffle": "^2.0.2",
     "@openzeppelin/contracts": "^4.4.2",
+    "@typechain/ethers-v5": "^9.0.0",
     "@typechain/hardhat": "^4.0.0",
     "@types/chai": "^4.3.0",
     "@types/mocha": "^9.1.0",
@@ -34,6 +35,7 @@
     "hardhat": "^2.8.3",
     "hardhat-gas-reporter": "^1.0.7",
     "solidity-coverage": "^0.7.18",
+    "ts-node": "^10.4.0",
     "typescript": "4.5.5"
   }
 }

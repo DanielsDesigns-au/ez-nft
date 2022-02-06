@@ -8,18 +8,16 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract EzNFT is ERC721URIStorage {
     using Counters for Counters.Counter;
-
     Counters.Counter private _tokenIdCounter;
-
     address contractAddress;
 
     constructor(address marketplaceAddress) ERC721("Ez Mint", "EZM") {
         contractAddress = marketplaceAddress;
     }
 
-    function creatToken(string memory tokenURI) public returns (uint256) {
-        uint256 tokenId = _tokenIdCounter.current();
+    function createToken(string memory tokenURI) public returns (uint256) {
         _tokenIdCounter.increment();
+        uint256 tokenId = _tokenIdCounter.current();
 
         _mint(msg.sender, tokenId);
         _setTokenURI(tokenId, tokenURI);

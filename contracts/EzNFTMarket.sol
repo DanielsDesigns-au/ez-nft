@@ -49,7 +49,7 @@ contract EzNFTMarket is ReentrancyGuard {
         uint256 tokenId,
         uint256 price
     ) public payable nonReentrant {
-        require(price > 0, "Price must be at least 1 wei");
+        require(price > 0.05 ether, "Price must be >0.05 ether");
         require(msg.value == listingPrice, "Price must equal listing price");
 
         _nftsMinted.increment();
@@ -99,6 +99,7 @@ contract EzNFTMarket is ReentrancyGuard {
         payable(owner).transfer(listingPrice);
     }
 
+    // Returns all nfts in the market that have not been sold
     function getMarketNFTs() public view returns (MarketNFT[] memory) {
         uint256 nftCount = _nftsMinted.current();
         uint256 unsoldNFTCount = _nftsMinted.current() - _nftsSold.current();
@@ -119,26 +120,58 @@ contract EzNFTMarket is ReentrancyGuard {
         return nfts;
     }
 
-    function getAccountNFTs() public view returns (MarketNFT[] memory) {
+    // Returns the nfts that the current user has
+    function getUserNFTs() public view returns (MarketNFT[] memory) {
         uint256 totalNFTCount = _nftsMinted.current();
         uint256 nftCount = 0;
         uint256 currentIndex = 0;
 
+        // calculate the amount of nfts user has purchased
         for (uint256 i = 0; i < totalNFTCount; i++) {
             if (idToMarketNFT[i + 1].owner == msg.sender) {
                 nftCount += 1;
             }
         }
 
+        // use that amount as the length because we cant have dynamic arrays
         MarketNFT[] memory nfts = new MarketNFT[](nftCount);
+
+        // loop over nfts and add the ones the user owns to the array
         for (uint256 i = 0; i < totalNFTCount; i++) {
             if (idToMarketNFT[i + 1].owner == msg.sender) {
-                uint256 currentId = i + 1;
+                uint256 currentId = idToMarketNFT[i + 1].nftId;
                 MarketNFT storage currentNFT = idToMarketNFT[currentId];
                 nfts[currentIndex] = currentNFT;
                 currentIndex += 1;
             }
         }
+
+        return nfts;
+    }
+
+    // returns the nfts the user has minted themself
+    function getUserMintedNFTs() public view returns (MarketNFT[] memory) {
+        uint256 totalNFTCount = _nftsMinted.current();
+        uint256 nftCount = 0;
+        uint256 currentIndex = 0;
+
+        for (uint256 i = 0; i < totalNFTCount; i++) {
+            if (idToMarketNFT[i + 1].seller == msg.sender) {
+                nftCount += 1;
+            }
+        }
+
+        MarketNFT[] memory nfts = new MarketNFT[](nftCount);
+
+        for (uint256 i = 0; i < totalNFTCount; i++) {
+            if (idToMarketNFT[i + 1].seller == msg.sender) {
+                uint256 currentId = idToMarketNFT[i + 1].nftId;
+                MarketNFT storage currentNFT = idToMarketNFT[currentId];
+                nfts[currentIndex] = currentNFT;
+                currentIndex += 1;
+            }
+        }
+
         return nfts;
     }
 }

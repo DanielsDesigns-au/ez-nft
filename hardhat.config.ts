@@ -30,26 +30,26 @@ const config: HardhatUserConfig = {
     hardhat: {
       chainId: 1337,
     },
-    mumbai: {
-      url: process.env.MUMBAI_URL,
-    },
+    // mumbai: {
+    //   url: process.env.MUMBAI_URL,
+    // },
     matic: {
       url: process.env.MATIC_URL,
       accounts: [process.env.MATIC_PRIVATE_KEY || '']
     },
-    ropsten: {
-      url: process.env.ROPSTEN_URL || "",
-      accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-    },
+    // ropsten: {
+    //   url: process.env.ROPSTEN_URL || "",
+    //   accounts:
+    //     process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    // },
   },
-  gasReporter: {
-    enabled: process.env.REPORT_GAS !== undefined,
-    currency: "USD",
-  },
-  etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
-  },
+  // gasReporter: {
+  //   enabled: process.env.REPORT_GAS !== undefined,
+  //   currency: "USD",
+  // },
+  // etherscan: {
+  //   apiKey: process.env.ETHERSCAN_API_KEY,
+  // },
   paths: {
     artifacts: './artifacts',
   },
