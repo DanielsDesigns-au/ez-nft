@@ -30,14 +30,14 @@ const config: HardhatUserConfig = {
     hardhat: {
       chainId: 1337,
     },
-    mumbai: {
-      url: `https://polygon-mumbai.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
-      accounts: [process.env.INFURA_PRIVATE_KEY || ''],
-    },
-    mainnet: {
-      url: `https://mainnet.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
-      accounts: [process.env.INFURA_PRIVATE_KEY || ''],
-    }
+    // mumbai: {
+    //   url: `https://polygon-mumbai.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+    //   accounts: [process.env.INFURA_PRIVATE_KEY || ''],
+    // },
+    // mainnet: {
+    //   url: `https://mainnet.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+    //   accounts: [process.env.INFURA_PRIVATE_KEY || ''],
+    // }
     // matic: {
     //   url: process.env.MATIC_URL,
     //   accounts: [process.env.MATIC_PRIVATE_KEY || '']

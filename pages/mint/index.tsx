@@ -1,29 +1,104 @@
-import React, { useState } from 'react';
-import { createMarket, uploadFile } from '@lib/ezNFT';
+import React, { useEffect, useState } from 'react';
+import { ipfsOptions, pinToIPFS } from '@lib/ezNFT';
+import { nftAddress, nftMarketAddress } from '@config';
 
 import { Header } from '@components';
+import Market from '@artifacts/contracts/EzNFTMarket.sol/EzNFTMarket.json';
+import NFT from '@artifacts/contracts/EzNFT.sol/EzNFT.json';
 import { NextPage } from 'next';
+import Web3Modal from 'web3modal';
+import { ethers } from 'ethers';
+import { create as ipfsHttpClient } from 'ipfs-http-client';
 import styles from './mint.module.scss';
 import { useRouter } from 'next/router';
 
 interface Props {}
 
 export const TheMint: NextPage<Props> = ({}) => {
-  const [fileUrl, setFileUrl] = useState(null);
-  const [file, setFile] = useState<File>();
+  const [fileUrl, setFileUrl] = useState('');
   const [formInput, updateFormInput] = useState({
     price: '',
     name: '',
     description: '',
-    fileUrl: '',
   });
   const router = useRouter();
 
+  const createClient = async () => {
+    const client = await ipfsHttpClient(ipfsOptions);
+    return client;
+  };
+
+  const uploadFile = async (file: File) => {
+    try {
+      // const client = await createClient();
+      // console.log('client loaded');
+      const res = await pinToIPFS(file);
+      console.log(res);
+      // const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      // await setFileUrl(url);
+      return true;
+    } catch (error) {
+      console.log('Error creating client or uploading file: ', error);
+      return false;
+    }
+  };
+
+  const createMarket = async (formData: NFT.CreateNFTFormData) => {
+    const client = await createClient();
+    const { name, description, price, fileUrl } = formData;
+    if (!name || !description || !price || !fileUrl) return;
+    /* first, upload to IPFS */
+    const data = JSON.stringify({
+      name,
+      description,
+      image: fileUrl,
+    });
+
+    try {
+      const added = await client.add(data);
+      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+
+      /* after file is uploaded to IPFS, pass the URL to save it on Polygon */
+      createSale(url, formData);
+    } catch (error) {
+      console.log('Error uploading file: ', error);
+    }
+  };
+
+  const createSale = async (url: string, formData: NFT.CreateNFTFormData) => {
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+
+    /* next, create the item */
+    let contract = new ethers.Contract(nftAddress, NFT.abi, signer);
+    let transaction = await contract.createToken(url);
+    let tx = await transaction.wait();
+    let event = tx.events[0];
+    let value = event.args[2];
+    let tokenId = value.toNumber();
+    const price = ethers.utils.parseUnits(formData.price.toString(), 'ether');
+
+    /* then list the item for sale on the marketplace */
+    contract = new ethers.Contract(nftMarketAddress, Market.abi, signer);
+    let listingPrice = await contract.getListingPrice();
+    listingPrice = listingPrice.toString();
+
+    transaction = await contract.createMarketNFT(nftAddress, tokenId, price, {
+      value: listingPrice,
+    });
+    await transaction.wait();
+
+    // returns true if transaction is successful
+    return true;
+  };
+
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e?.target?.files) {
-      await setFile(e.target.files[0]);
-      const url = await uploadFile(e.target.files[0]);
-      url && (await updateFormInput({ ...formInput, fileUrl: url }));
+    if (e?.target?.files?.[0]) {
+      console.log(e.target.files[0]);
+      const didUpload = await uploadFile(e.target.files[0]);
+      !!didUpload && console.log(`file uploaded to: ${fileUrl}`);
     }
   };
 
@@ -34,7 +109,7 @@ export const TheMint: NextPage<Props> = ({}) => {
     //   price: parseFloat(formInput.price),
     //   name: formInput.name,
     //   description: formInput.description,
-    //   fileUrl: formInput.fileUrl,
+    //   fileUrl: fileUrl,
     // });
   };
 
@@ -74,11 +149,7 @@ export const TheMint: NextPage<Props> = ({}) => {
             onChange={(e) => handleFile(e)}
           />
           {fileUrl && (
-            <img
-              className={styles.nftDisplay}
-              width='350'
-              src={formInput.fileUrl}
-            />
+            <img className={styles.nftDisplay} width='350' src={fileUrl} />
           )}
           <button onClick={(e) => handleSubmit(e)} className={styles.submit}>
             Create Digital Asset

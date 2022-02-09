@@ -2,12 +2,39 @@ import { nftAddress, nftMarketAddress } from '@config';
 
 import Market from '@artifacts/contracts/EzNFTMarket.sol/EzNFTMarket.json';
 import NFT from '@artifacts/contracts/EzNFT.sol/EzNFT.json';
+import { Options } from 'ipfs-http-client';
 import Web3Modal from 'web3modal';
 import axios from 'axios';
 import { ethers } from 'ethers';
-import { create as ipfsHttpClient } from 'ipfs-http-client';
 
-const client = ipfsHttpClient(process.env.INFURA_CLIENT_URL);
+const projectId = process.env.INFURA_IPFS_PROJECT_ID;
+const projectSecret = process.env.INFURA_IPFS_PROJECT_SECRET;
+const auth = 'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64')
+
+export const ipfsOptions: Options = {
+  host: 'ipfs.infura.io/api/v0',
+  port: 5001,
+  protocol: 'https',
+  headers: {
+    authorization: auth,
+  }
+}
+
+export const pinToIPFS = async (data: any) => {
+  const url = 'https://ipfs.infura.io:5001/api/v0/add';
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${process.env.NEXT_PUBLIC_INFURA_IPFS_PROJECT_ID}`,
+    },
+    mode: 'no-cors',
+    body: data
+  }).then(response => {
+    console.log(response.status)
+    return response;
+  })
+  return res;
+}
 
 export const loadNFTs = async () => {
   /* create a generic provider and query for unsold market items */
@@ -61,68 +88,6 @@ export const buyNft = async (nft: NFT.MarketNFT) => {
   });
   await transaction.wait();
   return loadNFTs();
-};
-
-export const uploadFile = async (file: File) => {
-  // file = e.target.files[0];
-  try {
-    const added = await client.add(file, {
-      progress: (prog) => console.log(`received: ${prog}`),
-    });
-    const url = `https://ipfs.infura.io/ipfs/${added.path}`;
-    return url;
-  } catch (error) {
-    console.log('Error uploading file: ', error);
-    return null;
-  }
-}
-
-export const createMarket = async (formData: NFT.CreateNFTFormData) => {
-  const { name, description, price, fileUrl } = formData;
-  if (!name || !description || !price || !fileUrl) return;
-  /* first, upload to IPFS */
-  const data = JSON.stringify({
-    name,
-    description,
-    image: fileUrl,
-  });
-  try {
-    const added = await client.add(data);
-    const url = `https://ipfs.infura.io/ipfs/${added.path}`;
-    /* after file is uploaded to IPFS, pass the URL to save it on Polygon */
-    createSale(url, formData);
-  } catch (error) {
-    console.log('Error uploading file: ', error);
-  }
-};
-
-export const createSale = async (url: string, formData: NFT.CreateNFTFormData) => {
-  const web3Modal = new Web3Modal();
-  const connection = await web3Modal.connect();
-  const provider = new ethers.providers.Web3Provider(connection);
-  const signer = provider.getSigner();
-
-  /* next, create the item */
-  let contract = new ethers.Contract(nftAddress, NFT.abi, signer);
-  let transaction = await contract.createToken(url);
-  let tx = await transaction.wait();
-  let event = tx.events[0];
-  let value = event.args[2];
-  let tokenId = value.toNumber();
-  const price = ethers.utils.parseUnits(formData.price.toString(), 'ether');
-
-  /* then list the item for sale on the marketplace */
-  contract = new ethers.Contract(nftMarketAddress, Market.abi, signer);
-  let listingPrice = await contract.getListingPrice();
-  listingPrice = listingPrice.toString();
-
-  transaction = await contract.createMarketNFT(nftAddress, tokenId, price, {
-    value: listingPrice,
-  });
-  await transaction.wait();
-
-  // returns true if transaction is successful
-  return true;
 };
 
 // export const pinJSONToIPFS = async (nftMetaData) => {
