@@ -23,6 +23,16 @@ declare namespace NFT {
     name: string;
     description: string;
     price: number;
-    fileUrl: string;
   }
 }
+
+// interface IPFSFileData {
+//   file: File;
+//   pinataMetaData?: {
+//     ['name']: string;
+//     ['keyvalues']: Record<string, string>
+//   },
+//   pinataOptions?: {
+//     cidVersion: number;
+//   },
+// }

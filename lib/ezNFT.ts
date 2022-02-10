@@ -6,6 +6,7 @@ import { Options } from 'ipfs-http-client';
 import Web3Modal from 'web3modal';
 import axios from 'axios';
 import { ethers } from 'ethers';
+import fs from "fs";
 
 const projectId = process.env.INFURA_IPFS_PROJECT_ID;
 const projectSecret = process.env.INFURA_IPFS_PROJECT_SECRET;
@@ -21,8 +22,7 @@ export const ipfsOptions: Options = {
 }
 
 export const pinToIPFS = async (data: any) => {
-  const url = 'https://ipfs.infura.io:5001/api/v0/add';
-  const res = await fetch(url, {
+  const res = await fetch('https://ipfs.infura.io:5001/api/v0/add', {
     method: 'POST',
     headers: {
       'Authorization': `Basic ${process.env.NEXT_PUBLIC_INFURA_IPFS_PROJECT_ID}`,
@@ -90,28 +90,38 @@ export const buyNft = async (nft: NFT.MarketNFT) => {
   return loadNFTs();
 };
 
-// export const pinJSONToIPFS = async (nftMetaData) => {
-//   const url = `https://api.pinata.cloud/pinning/pinJSONToIPFS`;
-//   //making axios POST request to Pinata ⬇️
-//   return axios
-//     .post(url, nftMetaData, {
-//       headers: {
-//         pinata_api_key: process.env.PINATA_PUBLIC_KEY,
-//         pinata_secret_api_key: process.env.PINATA_PRIVATE_KEY,
-//       }
-//     })
-//     .then(function (response) {
-//       return {
-//         success: true,
-//         pinataUrl: "https://gateway.pinata.cloud/ipfs/" + response.data.IpfsHash
-//       };
-//     })
-//     .catch(function (error) {
-//       console.log(error)
-//       return {
-//         success: false,
-//         message: error.message,
-//       }
+const uploadFile = async (file: File) => {
+  try {
+    // const res = await pinToIPFS(file);
+    // console.log(res);
+    console.log(process.env.NEXT_PUBLIC_INFURA_IPFS_PROJECT_ID);
+    // const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+    // await setFileUrl(url);
+    return true;
+  } catch (error) {
+    console.log('Error creating client or uploading file: ', error);
+    return false;
+  }
+};
 
-//     });
-// };
+const createMarket = async (formData: NFT.CreateNFTFormData, fileUrl: string) => {
+  // const client = await createClient();
+  const { name, description, price } = formData;
+  if (!name || !description || !price || !fileUrl) return;
+  /* first, upload to IPFS */
+  const data = JSON.stringify({
+    name,
+    description,
+    image: fileUrl,
+  });
+
+  try {
+    // const added = await client.add(data);
+    // const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+
+    /* after file is uploaded to IPFS, pass the URL to save it on Polygon */
+    // createSale(url, formData);
+  } catch (error) {
+    console.log('Error uploading file: ', error);
+  }
+};
