@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { nftAddress, nftMarketAddress } from "@config";
 
 import { Header } from "@components";
@@ -30,7 +30,6 @@ export const TheMint: NextPage<Props> = ({}) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            // console.log(reader.result);
             setDataUrl(reader.result);
         };
     };
@@ -71,8 +70,7 @@ export const TheMint: NextPage<Props> = ({}) => {
 
             const imageUrl = `${ipfsGateway}${IpfsHash}`;
             const saleSuccess = await createMarket(imageUrl);
-
-            return;
+            return saleSuccess;
         } catch (error) {
             console.log("Error on client side file upload: ", error);
             return;
@@ -82,12 +80,6 @@ export const TheMint: NextPage<Props> = ({}) => {
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         uploadFile();
-        // alert(JSON.stringify(formInput));
-        // if (fileUrl !== "" && fileUrl !== ipfsGateway) {
-        //     !!saleSuccess
-        //         ? console.log("Sale Success")
-        //         : console.log("Sale Failed");
-        // }
     };
 
     const createMarket = async (imageUrl: string) => {
@@ -125,17 +117,16 @@ export const TheMint: NextPage<Props> = ({}) => {
                 `JSON Uploaded!\n\tHash:${IpfsHash}\n\tPinSize:${PinSize}\n\tTimestamp:${Timestamp}`
             );
 
-            /* after file is uploaded to IPFS, pass the jsonUrl to save it on Polygon */
-
-            const saleSuccess = await createSale(jsonUrl);
+            /* after file is uploaded to IPFS, pass the jsonUrl to save it on pinata with meta data */
+            const saleSuccess = await addToMarket(jsonUrl);
             return saleSuccess;
         } catch (error) {
             console.log("Error uploading file: ", error);
-            return false;
+            return;
         }
     };
 
-    const createSale = async (url: string) => {
+    const addToMarket = async (url: string) => {
         try {
             const web3Modal = new Web3Modal();
             const connection = await web3Modal.connect();
@@ -169,10 +160,10 @@ export const TheMint: NextPage<Props> = ({}) => {
                 }
             );
             await transaction.wait();
-            console.log(`Created nft successfully`);
+            console.log(`Added nft successfully!`);
         } catch (error) {
-            console.log(`Create Sale Error: ${error}`);
-            return false;
+            console.log(`Error in addToMarket Function: ${error}`);
+            return;
         }
 
         // returns true if transaction is successful
