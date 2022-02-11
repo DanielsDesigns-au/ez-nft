@@ -1,26 +1,61 @@
 .container {
-  padding: 0 2rem;
-  max-width: 1200px;
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
+    padding: 0 2rem;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
 }
 
 .divider {
-  width: 100%;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.397);
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.397);
 }
 
 .nftDisplay {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  columns: 3;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    columns: 3;
+    margin: 32px 0;
 }
 
 .nftCard {
-  width: 25%;
-  height: 320px;
-  background-color: lightgreen;
+    width: 280px;
+    height: 420px;
+    background-color: lightgreen;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.imageSquare {
+    width: 280px;
+    height: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: whitesmoke;
+}
+
+.displayImage {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+}
+
+.details {
+    padding: 0 10%;
+}
+
+.name {
+    margin: 0 0 0.6em;
+}
+
+.price {
+    margin: 0 0 0.5em;
+}
+
+.description {
+    margin: 0;
 }

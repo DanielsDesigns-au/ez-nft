@@ -8,14 +8,12 @@ import { NextPage } from "next";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import styles from "./mint.module.scss";
-import { useRouter } from "next/router";
 
 const ipfsGateway = "https://gateway.pinata.cloud/ipfs/";
 
 interface Props {}
 
 export const TheMint: NextPage<Props> = ({}) => {
-    const [fileUrl, setFileUrl] = useState("");
     const [tempUrl, setTempUrl] = useState("");
 
     const [dataUrl, setDataUrl] = useState<string | ArrayBuffer | null>();

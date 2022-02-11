@@ -14,14 +14,14 @@ export default async function handler(
         res.status(400).json({ error: "Bad Request" });
         return;
     } else {
-        console.log(`File Url: ${!!dataUrl} \n\nFile Pathname: ${path}`);
+        console.log(`File Url: ${dataUrl.slice(0, 20)} \n\nFile Pathname: ${path}`);
     }
 
     // // For testing variables
     // res.status(200).json({ nft: "ez" });
     // return;
 
-    const data = dataUrl.replace(/^data:image\/png;base64,/, "");
+    const data = dataUrl.replace(/.+?base64,/, "");
     const buff = Buffer.from(data, "base64");
     const stream = Readable.from(buff);
 

@@ -1,9 +1,10 @@
+import { buyNft, loadNFTs } from "@lib/ezNFT";
+
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { Header } from "@components";
 import Image from "next/image";
 import type { NextPage } from "next";
-import { loadNFTs } from "@lib/ezNFT";
 import styles from "./index.module.scss";
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
 }
 
 const Home: NextPage<Props> = ({ nfts }) => {
+    // console.log(nfts);
     return (
         <>
             <Header />
@@ -23,11 +25,28 @@ const Home: NextPage<Props> = ({ nfts }) => {
                     <h4>No nfts 😭</h4>
                 ) : (
                     <div className={styles.nftDisplay}>
-                        {nfts.map((nft) => (
-                            <div className={styles.nftCard}>
-                                <h2>{nft.name}</h2>
-                                <h5>{nft.price}</h5>
-                                <p>{nft.description}</p>
+                        {nfts.map((nft, index) => (
+                            <div className={styles.nftCard} key={nft?.keyProp}>
+                                <div className={styles.imageSquare}>
+                                    <img
+                                        src={nft.image}
+                                        className={styles.displayImage}
+                                        loading="lazy"
+                                    />
+                                </div>
+                                <div className={styles.details}>
+                                    <h2 className={styles.name}>{nft.name}</h2>
+                                    <h5 className={styles.price}>
+                                        {nft.price} ETH
+                                    </h5>
+                                    <p className={styles.description}>
+                                        {nft.description}
+                                    </p>
+                                    {/* currently doesnt work cause need to correctly serialize tokenId */}
+                                    {/* <button onClick={(e) => buyNft(nft)}>
+                                        Buy Me
+                                    </button> */}
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -48,8 +67,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         };
     } catch (error) {
         console.log(error);
+        const nfts = [""];
         return {
-            props: {},
+            props: {
+                nfts,
+            },
         };
     }
 };

@@ -108,6 +108,7 @@ contract EzNFTMarket is ReentrancyGuard {
         MarketNFT[] memory nfts = new MarketNFT[](unsoldNFTCount);
 
         for (uint256 i = 0; i < nftCount; i++) {
+            // check that the owner is the market (seller is still a user)
             if (idToMarketNFT[i + 1].owner == address(0)) {
                 // get the current id of the item
                 uint256 currentId = idToMarketNFT[i + 1].nftId;
