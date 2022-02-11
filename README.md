@@ -1,3 +1,32 @@
+# Setting up local development
+
+First set up the local web3 environment using hardhat, also generating us some testing accounts with some phat stacks of ETH 🤑
+
+```shell
+npx hardhat node
+```
+
+Copy one of the account private addresses from the console output (leave hardhat node running), then go to chrome and if you haven't already install [MetaMask](https://metamask.io/download/), this will allow you to add the account to your MetaMask wallet so you can use it in local the environment. 
+
+Note** I had to enable test networks at the top by selecting networks dropdown at the top right next to your account icon and click `show/hide test networks` then selecting localhost:8545
+
+run the following command to deploy the smart contacts within your artifacts folder to the local network
+
+```shell
+npx hardhat run scripts/deploy.ts --network localhost
+```
+
+Then copy the market address and the nft address to their respective variables in `./config.ts`
+
+You can now run the app without any hassle the usual way
+
+```shell
+npm run dev
+```
+
+
+## Default ReadMe from Hardhat
+
 # Advanced Sample Hardhat Project
 
 This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
@@ -44,29 +73,3 @@ npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
 # Performance optimizations
 
 For faster runs of your tests and scripts, consider skipping ts-node's type checking by setting the environment variable `TS_NODE_TRANSPILE_ONLY` to `1` in hardhat's environment. For more details see [the documentation](https://hardhat.org/guides/typescript.html#performance-optimizations).
-
-# Setting up local development
-
-First set up the local web3 environment using hardhat, also generating us some testing accounts with some phat stacks of ETH 🤑
-
-```shell
-npx hardhat node
-```
-
-Copy one of the account private addresses from the console output (leave hardhat node running), then go to chrome and if you haven't already install [MetaMask](https://metamask.io/download/), this will allow you to add the account to your MetaMask wallet so you can use it in local the environment. 
-
-Note** I had to enable test networks at the top by selecting networks dropdown at the top right next to your account icon and click `show/hide test networks` then selecting localhost:8545
-
-run the following command to deploy the smart contacts within your artifacts folder to the local network
-
-```shell
-npx hardhat run scripts/deploy.ts --network localhost
-```
-
-Then copy the market address and the nft address to their respective variables in `./config.ts`
-
-You can now run the app without any hassle the usual way
-
-```shell
-npm run dev
-```
