@@ -1,5 +1,4 @@
 .container {
-  padding: 0 2rem;
   max-width: 1200px;
   display: flex;
   flex-direction: column;
@@ -23,7 +22,7 @@
 .nftCard {
   width: 500px;
   height: auto;
-  background-color: lightgreen;
+  background-color: rgb(135, 230, 135);
   border-radius: 20px;
   overflow: hidden;
 }
@@ -36,6 +35,9 @@
   align-items: center;
   overflow: hidden;
   background-color: whitesmoke;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .displayImage {
@@ -48,8 +50,21 @@
   padding: 12px;
 }
 
-.name {
+.priceBox {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  position: relative;
   margin: 0 0 0.6em;
+}
+
+.ethSymbol {
+  width: auto;
+  height: 100%;
+}
+
+.price {
+  margin: 0;
 }
 
 .from {
@@ -58,4 +73,9 @@
 
 .to {
   margin: 0;
+}
+
+.textLink {
+  color: blue;
+  text-decoration: underline;
 }

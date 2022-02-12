@@ -1,5 +1,4 @@
 .container {
-  padding: 0 2rem;
   max-width: 1200px;
   display: flex;
   flex-direction: column;
@@ -19,4 +18,12 @@
   & > * {
     margin: 1em 0;
   }
+}
+
+.loadingContainer {
+  width: 100%;
+  min-height: 320px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

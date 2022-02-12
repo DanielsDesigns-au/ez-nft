@@ -29,23 +29,37 @@ const Home: NextPage<Props> = ({ nfts }) => {
           <h4>No nfts for sale 😭</h4>
         ) : (
           <div className={styles.nftDisplay}>
-            {nfts.map((nft, index) => (
-              <div className={styles.nftCard} key={nft?.keyProp}>
-                <div className={styles.imageSquare}>
-                  <img
-                    src={nft.image}
-                    className={styles.displayImage}
-                    loading="lazy"
-                  />
-                </div>
+            {nfts.map((nft, i) => (
+              <div className={styles.nftCard} key={nft?.keyProp || `nft-${i}`}>
+                <div
+                  className={styles.imageSquare}
+                  style={{ backgroundImage: `url(${nft?.image})` }}
+                ></div>
                 <div className={styles.details}>
-                  <h2 className={styles.name}>{nft.name}</h2>
-                  <h5 className={styles.price}>{nft.price} ETH</h5>
-                  <p className={styles.description}>{nft.description}</p>
-                  {/* currently doesnt work cause need to correctly serialize tokenId */}
-                  <button onClick={(e) => buyNft(nft.tokenId, nft.price)}>
-                    Buy Me
-                  </button>
+                  <div className={styles.topDetails}>
+                    <p className={styles.artist}>{nft?.name}</p>
+                    <p className={styles.priceText}>Price</p>
+                  </div>
+                  <div className={styles.midDetails}>
+                    <h4 className={styles.tokenId}>#{nft?.tokenId}</h4>
+                    <h4 className={styles.price}>
+                      {nft?.price}{" "}
+                      <img
+                        src="/Images/etherium.png/"
+                        className={styles.priceSymbol}
+                      />
+                    </h4>
+                  </div>
+                  <p className={styles.description}>{nft?.description}</p>
+                  <div className={styles.botDetails}>
+                    <button
+                      className={styles.quickBuy}
+                      onClick={(e) => buyNft(nft?.tokenId, nft?.price)}
+                    >
+                      Quick Buy
+                    </button>
+                    <button className={styles.like}>Like</button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -58,6 +72,20 @@ const Home: NextPage<Props> = ({ nfts }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
+    // ---- For Testing styles ----
+
+    // const nfts: any = [];
+    // for (var i = 0; i < 30; i++) {
+    //   nfts.push({
+    //     price: Math.round(Math.random() * 1000) / 10000,
+    //     tokenId: Math.round(Math.random() * 1000),
+    //     image: "/Images/ethSquare.png",
+    //     name: "NFT Test Title",
+    //     description:
+    //       "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
+    //   });
+    // }
+
     const nfts = await getUnsoldNFTs();
 
     return {

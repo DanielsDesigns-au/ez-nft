@@ -3,10 +3,19 @@
   width: 100%;
   padding: 0 32px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   background-color: grey;
   box-shadow: 0 5px 5px rgba(0, 0, 0, 0.186);
+}
+
+.innerWidth {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  max-width: 1200px;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .left,
@@ -22,4 +31,8 @@
   a {
     margin: 1em;
   }
+}
+
+.sitename {
+  margin-left: 12px;
 }

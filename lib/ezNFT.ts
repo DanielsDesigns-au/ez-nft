@@ -82,7 +82,7 @@ export const buyNft = async (tokenId: number, price: string) => {
   }
 };
 
-export const getUserNFTs = async (
+export const getUsersBoughtNFTs = async (
   setNfts: Dispatch<SetStateAction<any[]>>,
   setLoadingState: Dispatch<SetStateAction<boolean>>
 ) => {
@@ -120,13 +120,10 @@ export const getUserNFTs = async (
 
 export const getCreatedAndSoldUserNFTS = async (
   setSold: Dispatch<SetStateAction<any[]>>,
-  setNfts: Dispatch<SetStateAction<any[]>>,
+  setCreated: Dispatch<SetStateAction<any[]>>,
   setLoadingState: Dispatch<SetStateAction<boolean>>
 ) => {
-  const web3Modal = new Web3Modal({
-    network: "mainnet",
-    cacheProvider: true,
-  });
+  const web3Modal = new Web3Modal();
   const connection = await web3Modal.connect();
   const provider = new ethers.providers.Web3Provider(connection);
   const signer = provider.getSigner();
@@ -137,27 +134,41 @@ export const getCreatedAndSoldUserNFTS = async (
     signer
   );
   const tokenContract = new ethers.Contract(nftAddress, NFT.abi, provider);
-  const data = await marketContract.fetchItemsCreated();
+  const data = await marketContract.getUserMintedNFTs();
 
   const items = await Promise.all(
     data.map(async (i: any) => {
-      const tokenUri = await tokenContract.tokenURI(i.tokenId);
-      const meta = await axios.get(tokenUri);
-      let price = ethers.utils.formatUnits(i.price.toString(), "ether");
-      let item = {
-        price,
-        tokenId: i.tokenId.toNumber(),
-        seller: i.seller,
-        owner: i.owner,
-        sold: i.sold,
-        image: meta.data.image,
-      };
-      return item;
+      const price = ethers.utils.formatUnits(i.price.toString(), "ether");
+      try {
+        const tokenUri = await tokenContract.tokenURI(i.tokenId);
+        const meta = await axios.get(tokenUri);
+        const item = {
+          price,
+          tokenId: i.tokenId.toNumber(),
+          seller: i.seller,
+          owner: i.owner,
+          sold: i.sold,
+          image: meta.data.image,
+        };
+        return item;
+      } catch (error) {
+        console.log(error);
+        const item = {
+          price,
+          tokenId: i.tokenId.toNumber(),
+          seller: i.seller,
+          owner: i.owner,
+          sold: i.sold,
+          image: "Failed to fetch image",
+        };
+        return item;
+      }
     })
   );
   /* create a filtered array of items that have been sold */
   const soldItems = items.filter((i) => i.sold);
+  const saleItems = items.filter((i) => !i.sold);
   setSold(soldItems);
-  setNfts(items);
+  setCreated(saleItems);
   setLoadingState(false);
 };

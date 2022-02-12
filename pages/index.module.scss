@@ -1,61 +1,121 @@
 .container {
-    padding: 0 2rem;
-    max-width: 1200px;
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
 }
 
 .divider {
-    width: 100%;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.397);
+  width: 100%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.397);
 }
 
 .nftDisplay {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    columns: 3;
-    margin: 32px 0;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
 }
 
 .nftCard {
-    width: 280px;
-    height: 420px;
-    background-color: lightgreen;
-    border-radius: 20px;
-    overflow: hidden;
+  width: 260px;
+  height: 420px;
+  background-color: lightgreen;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 16px 0;
+  border: 1px solid #464646;
+  box-shadow: 1px 3px 8px black;
+
+  &:not(:nth-child(4n)) {
+    margin-right: 53px;
+  }
 }
 
 .imageSquare {
-    width: 280px;
-    height: 280px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    background-color: whitesmoke;
+  width: 100%;
+  height: 65%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: whitesmoke;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .displayImage {
-    max-width: 100%;
-    width: auto;
-    height: auto;
+  max-width: 100%;
+  width: auto;
+  height: auto;
 }
 
 .details {
-    padding: 0 10%;
+  padding: 12px 0;
+  height: 35%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
-.name {
-    margin: 0 0 0.6em;
+.topDetails,
+.midDetails,
+.description,
+.botDetails {
+  padding: 0 16px;
+  margin: 4px 0;
 }
 
-.price {
-    margin: 0 0 0.5em;
+.topDetails,
+.midDetails,
+.botDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h4,
+  p {
+    margin: 0;
+  }
+}
+
+.artist,
+.priceText {
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .description {
-    margin: 0;
+  margin: 0;
+}
+
+.price,
+.tokenId {
+  position: relative;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.priceSymbol {
+  height: 16px;
+}
+
+.botDetails {
+  margin: auto 0 0;
+}
+
+.quickBuy,
+.like {
+  background-color: white;
+  border: 1px solid black;
+  outline: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.5s;
+
+  &:active {
+    transform: scale(80%, 80%);
+  }
 }

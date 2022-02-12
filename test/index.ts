@@ -14,19 +14,19 @@ describe("NFTMarket", function () {
     const nftContractAddress = nft.address;
 
     let listingPrice = await market.getListingPrice();
-    listingPrice = listingPrice.toString();
+    const listingPriceString = listingPrice.toString();
     const auctionPrice = ethers.utils.parseUnits('100', 'ether');
 
     await nft.createToken("https://www.mytokenlocation.com");
     await nft.createToken("https://www.mytokenlocation2.com");
 
-    await market.createMarketNFT(nftContractAddress, 1, auctionPrice, {value: listingPrice});
-    await market.createMarketNFT(nftContractAddress, 2, auctionPrice, {value: listingPrice});
+    await market.createMarketNFT(nftContractAddress, 1, auctionPrice, { value: listingPriceString });
+    await market.createMarketNFT(nftContractAddress, 2, auctionPrice, { value: listingPriceString });
 
     // Helper function for testing to generate as many signers as you want
     const [_, buyerAddress] = await ethers.getSigners();
 
-    await market.connect(buyerAddress).sellMarketNFT(nftContractAddress, 1, {value: auctionPrice});
+    await market.connect(buyerAddress).sellMarketNFT(nftContractAddress, 1, { value: auctionPrice });
 
     const items = await market.getMarketNFTs();
     console.log(`items: ${items}`);
