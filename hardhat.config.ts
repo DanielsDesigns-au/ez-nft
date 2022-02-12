@@ -8,30 +8,29 @@ import * as dotenv from "dotenv";
 
 import { HardhatUserConfig, task } from "hardhat/config";
 
+import { network } from "@config";
+
 dotenv.config();
 
 const config: HardhatUserConfig = {
   solidity: "0.8.4",
+  defaultNetwork: network,
   networks: {
     hardhat: {
       chainId: 1337,
     },
-    // mumbai: {
-    //   url: `https://polygon-mumbai.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
-    //   accounts: [process.env.INFURA_PRIVATE_KEY || ''],
-    // },
-    // mainnet: {
-    //   url: `https://mainnet.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
-    //   accounts: [process.env.INFURA_PRIVATE_KEY || ''],
-    // }
-    // matic: {
-    //   url: process.env.MATIC_URL,
-    //   accounts: [process.env.MATIC_PRIVATE_KEY || '']
-    // },
+    mumbai: {
+      url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_MUMBAI_URL_ID}`,
+      accounts: [`0x${process.env.METAMASK_PRIVATE_KEY}`],
+    },
+    mainnet: {
+      url: `https://polygon-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_POLYGON_URL_ID}`,
+      accounts: [`0x${process.env.METAMASK_PRIVATE_KEY}`],
+    }
     // ropsten: {
     //   url: process.env.ROPSTEN_URL || "",
     //   accounts:
-    //     process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    //     process.env.METAMASK_PRIVATE_KEY !== undefined ? [process.env.METAMASK_PRIVATE_KEY] : [],
     // },
   },
   // gasReporter: {

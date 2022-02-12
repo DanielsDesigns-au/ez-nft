@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { nftAddress, nftMarketAddress } from "@config";
+import { JsonRpcProvider, nftAddress, nftMarketAddress } from "@config";
 
 import Market from "@artifacts/contracts/EzNFTMarket.sol/EzNFTMarket.json";
 import NFT from "@artifacts/contracts/EzNFT.sol/EzNFT.json";
@@ -9,7 +9,7 @@ import { ethers } from "ethers";
 
 export const getUnsoldNFTs = async () => {
   /* create a generic provider and query for unsold market items */
-  const provider = new ethers.providers.JsonRpcProvider();
+  const provider = new ethers.providers.JsonRpcProvider(JsonRpcProvider);
   const tokenContract = new ethers.Contract(nftAddress, NFT.abi, provider);
   const marketContract = new ethers.Contract(
     nftMarketAddress,

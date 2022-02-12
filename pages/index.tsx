@@ -95,7 +95,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   } catch (error) {
     console.log(error);
-    const nfts = [""];
+    const nfts: Array<any> = [];
     return {
       props: {
         nfts,
