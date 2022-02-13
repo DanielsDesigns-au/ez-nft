@@ -22,7 +22,7 @@ npx hardhat node
 
 Copy one of the account private addresses from the console output (leave hardhat node running), then go to chrome and if you haven't already install [MetaMask](https://metamask.io/download/). This will allow you to add the account to your MetaMask wallet so you can use it in local the environment.
 
-Note** I had to enable test networks at the top by selecting networks dropdown at the top right next to your account icon and click `show/hide test networks` then selecting localhost:8545
+> Note I had to enable test networks at the top by selecting networks dropdown at the top right next to your account icon and click `show/hide test networks` then selecting localhost:8545
 
 also if having trouble adding accounts or selecting the network come back to this step after running next js dev environment.
 
@@ -52,11 +52,17 @@ npm run dev
 
 Try minting an nft from the mint section then go back to home after it has finished minting and see it load from the blockchain!
 
-Note lowest price atm you can list a NFT for is 0.05 ether, but you can change it in the `./contracts/EzNFTMarket.sol` you just need to recompile (and redeploy?).
+> Note lowest price atm you can list a NFT for is 0.05 ether, but you can change it in the `./contracts/EzNFTMarket.sol` you just need to recompile (and redeploy?).
 
 You can also swap to a different test account and buy one of the NFTs from the Home, which will then appear as a purchased NFT in the profile section.
 
 Enjoy trying it out! slack me if you have any issues 😁
+
+# Helpful links
+
+- [Pinata SaaS](https://app.pinata.cloud/signin)
+- [Polygon RPC Providers](https://docs.polygon.technology/docs/develop/network-details/network/)
+- [Polygon Faucet](https://faucet.polygon.technology/)
 
 ## Default ReadMe from Hardhat
 

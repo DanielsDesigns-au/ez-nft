@@ -49,7 +49,7 @@ export const TheMint: NextPage<Props> = ({}) => {
 
   const uploadFile = async () => {
     setLoadingState("Uploading File...");
-    if (!dataUrl || !filepath) return;
+    if (!dataUrl || !filepath) return setLoadingState("");
     const metaData = JSON.stringify({
       dataUrl: dataUrl,
       path: filepath,
@@ -175,48 +175,70 @@ export const TheMint: NextPage<Props> = ({}) => {
         </div>
         {loadingState === "" ? (
           <form className={styles.form}>
-            <input
-              placeholder="Token name"
-              className={styles.nameInput}
-              onChange={(e) =>
-                updateFormInput({
-                  ...formInput,
-                  name: e.target.value,
-                })
-              }
-            />
-            <textarea
-              placeholder="Asset Description"
-              className={styles.descInput}
-              onChange={(e) =>
-                updateFormInput({
-                  ...formInput,
-                  description: e.target.value,
-                })
-              }
-            />
-            <input
-              placeholder="Asset Price in Eth"
-              className={styles.priceInput}
-              onChange={(e) =>
-                updateFormInput({
-                  ...formInput,
-                  price: e.target.value,
-                })
-              }
-            />
-            <input
-              type="file"
-              name="Asset"
-              className={styles.fileInput}
-              onChange={(e) => handleFile(e)}
-            />
-            {tempUrl && (
-              <img className={styles.nftDisplay} width="350" src={tempUrl} />
-            )}
-            <button onClick={(e) => handleSubmit(e)} className={styles.submit}>
-              Create Digital Asset
-            </button>
+            <div className={styles.imageSide}>
+              {tempUrl ? (
+                <>
+                  <img
+                    className={styles.imageDisplay}
+                    width="350"
+                    src={tempUrl}
+                  />
+                  <input
+                    type="file"
+                    name="Asset"
+                    className={styles.fileInput}
+                    onChange={(e) => handleFile(e)}
+                  />
+                </>
+              ) : (
+                <div className={styles.imageDisplay}>
+                  <input
+                    type="file"
+                    name="Asset"
+                    className={styles.fileInput}
+                    onChange={(e) => handleFile(e)}
+                  />
+                </div>
+              )}
+            </div>
+            <div className={styles.detailSide}>
+              <input
+                placeholder="Token name"
+                className={styles.nameInput}
+                onChange={(e) =>
+                  updateFormInput({
+                    ...formInput,
+                    name: e.target.value,
+                  })
+                }
+              />
+              <textarea
+                placeholder="Asset Description"
+                className={styles.descInput}
+                onChange={(e) =>
+                  updateFormInput({
+                    ...formInput,
+                    description: e.target.value,
+                  })
+                }
+              />
+              <input
+                placeholder="Asset Price in Eth"
+                className={styles.priceInput}
+                onChange={(e) =>
+                  updateFormInput({
+                    ...formInput,
+                    price: e.target.value,
+                  })
+                }
+              />
+              <button
+                onClick={(e) => handleSubmit(e)}
+                className={styles.submit}
+              >
+                Create Digital Asset
+              </button>
+            </div>
           </form>
         ) : (
           <div className={styles.loadingContainer}>

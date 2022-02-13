@@ -26,9 +26,18 @@
   margin: 16px 0;
   border: 1px solid #464646;
   box-shadow: 1px 3px 8px black;
+  transition: transform 0.25s;
 
   &:not(:nth-child(4n)) {
     margin-right: 53px;
+  }
+
+  &:hover {
+    transform: scale(105%, 105%);
+  }
+
+  &:active {
+    transform: scale(95%, 95%);
   }
 }
 

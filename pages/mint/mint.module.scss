@@ -12,12 +12,7 @@
 
 .form {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  & > * {
-    margin: 1em 0;
-  }
+  justify-content: space-evenly;
 }
 
 .loadingContainer {
@@ -26,4 +21,25 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.imageSide {
+  width: 40%;
+  margin: 1em 0;
+}
+
+.imageDisplay {
+  min-height: 300px;
+  border: 1px dotted black;
+  border-radius: 24px;
+}
+
+.detailSide {
+  min-height: 300px;
+  width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 1em 0;
 }
