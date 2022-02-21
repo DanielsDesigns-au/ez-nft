@@ -2,7 +2,7 @@ import { buyNft, getUnsoldNFTs } from "@lib/ezNFT";
 
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { Header } from "@components";
+import { Header } from "@/components";
 import Image from "next/image";
 import type { NextPage } from "next";
 import styles from "./index.module.scss";

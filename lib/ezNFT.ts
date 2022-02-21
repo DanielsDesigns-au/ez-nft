@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction } from "react";
-import { JsonRpcProvider, nftAddress, nftMarketAddress } from "@config";
+import { JsonRpcProvider, nftAddress, nftMarketAddress } from "@/config";
 
-import Market from "@artifacts/contracts/EzNFTMarket.sol/EzNFTMarket.json";
-import NFT from "@artifacts/contracts/EzNFT.sol/EzNFT.json";
+import Market from "@/artifacts/contracts/EzNFTMarket.sol/EzNFTMarket.json";
+import NFT from "@/artifacts/contracts/EzNFT.sol/EzNFT.json";
 import Web3Modal from "web3modal";
 import axios from "axios";
 import { ethers } from "ethers";

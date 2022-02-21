@@ -8,7 +8,7 @@ import * as dotenv from "dotenv";
 
 import { HardhatUserConfig, task } from "hardhat/config";
 
-import { network } from "@config";
+import { network } from "./config";
 
 dotenv.config();
 

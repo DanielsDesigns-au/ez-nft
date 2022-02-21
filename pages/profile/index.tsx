@@ -2,7 +2,7 @@ import { getCreatedAndSoldUserNFTS, getUsersBoughtNFTs } from "@lib/ezNFT";
 import { useEffect, useState } from "react";
 
 import Head from "next/head";
-import { Header } from "@components";
+import { Header } from "@/components";
 import Link from "next/link";
 import { ethers } from "ethers";
 import styles from "./profile.module.scss";

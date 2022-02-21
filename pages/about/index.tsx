@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Header } from "@components";
+import { Header } from "@/components";
 import React from "react";
 import styles from "./about.module.scss";
 

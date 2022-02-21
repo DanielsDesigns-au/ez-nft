@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { nftAddress, nftMarketAddress } from "@config";
+import { nftAddress, nftMarketAddress } from "@/config";
 
-import { Header } from "@components";
-import Market from "@artifacts/contracts/EzNFTMarket.sol/EzNFTMarket.json";
-import NFT from "@artifacts/contracts/EzNFT.sol/EzNFT.json";
+import { Header } from "@/components";
+import Market from "@/artifacts/contracts/EzNFTMarket.sol/EzNFTMarket.json";
+import NFT from "@/artifacts/contracts/EzNFT.sol/EzNFT.json";
 import { NextPage } from "next";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
